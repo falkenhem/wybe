@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInput, Text, Button } from "react-native-paper";
 import ImageSelector from "../Components/ImageSelector.js";
@@ -41,24 +41,26 @@ function addEventToFirestore(name, description, bannerUrl, currentUser) {
     });
 }
 
+function checkEventSetupStatus(
+  title,
+  description,
+  date,
+  setEventSetupComplete
+) {
+  if (title.length > 0 && description.length > 0 && date !== null) {
+    setEventSetupComplete(true);
+  }
+}
+
 function CreateEventScreen({ navigation }) {
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [date, setDate] = useState();
+  const [eventSetupComplete, setEventSetupComplete] = useState(false);
   const { user } = useContext(AuthContext);
   const currentUser = user.toJSON();
   const [bannerUrl, setBannerUrl] = useState();
-  const [date, setDate] = useState(undefined);
-  const [singleOpen, setSingleOpen] = useState(false);
-  const onDismissSingle = useCallback(() => {
-    setSingleOpen(false);
-  }, [setSingleOpen]);
-  const onChangeSingle = useCallback(
-    (params) => {
-      setSingleOpen(false);
-      setDate(params.date);
-    },
-    [setSingleOpen, setDate]
-  );
+  //console.log(eventSetupComplete);
 
   return (
     <View style={styles.container}>
@@ -68,6 +70,8 @@ function CreateEventScreen({ navigation }) {
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
+        date={date}
+        setDate={setDate}
       ></CreateEventWizard>
       {/* <ImageSelector getUrl={(url) => setBannerUrl(url)} />
 

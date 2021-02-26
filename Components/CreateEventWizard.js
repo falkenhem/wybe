@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
-import { Image, View, Text, Button } from "react-native";
-import { TextInput } from "react-native-paper";
+import React, { useRef, useState, useEffect } from "react";
+import { Image, View } from "react-native";
+import { TextInput, Title, IconButton } from "react-native-paper";
 import Wizard from "react-native-wizard";
 import styles from "../CustomProperties/Styles";
 import ImageSelector from "../Components/ImageSelector";
-import DatePicker from "react-native-date-picker";
+import WebDatePicker from "../Components/WebDatePicker";
+import theme from "../CustomProperties/Theme";
 
 function CreateEventWizard({
   getUrl,
@@ -12,6 +13,8 @@ function CreateEventWizard({
   setTitle,
   description,
   setDescription,
+  date,
+  setDate,
 }) {
   const wizard = useRef();
   const [isFirstStep, setIsFirstStep] = useState();
@@ -19,18 +22,34 @@ function CreateEventWizard({
   const [currentStep, setCurrentStep] = useState(0);
   const [currentBanner, setCurrentBanner] = useState(null);
 
+  useEffect(() => {
+    // This gets called after every render, by default
+    // (the first one, and every one after that)
+    console.log("render!");
+
+    // If you want to implement componentWillUnmount,
+    // return a function from here, and React will call
+    // it prior to unmounting.
+    return () => console.log("unmounting...");
+  });
+
   const stepList = [
     {
       content: (
         <View style={styles.container}>
-          <ImageSelector
-            getUrl={getUrl}
-            currentBanner={currentBanner}
-            setCurrentBanner={setCurrentBanner}
-          />
+          <Title fontSize={200}>
+            1. Select a Banner image and give your Event a Name.
+          </Title>
+          <View style={styles.container}>
+            <ImageSelector
+              getUrl={getUrl}
+              currentBanner={currentBanner}
+              setCurrentBanner={setCurrentBanner}
+            />
+          </View>
           <TextInput
             mode="flat"
-            style={{ flex: 1, margin: "5%" }}
+            style={styles.singleLineInput}
             multiline="false"
             value={title}
             placeholder="Give your event a name..."
@@ -43,9 +62,10 @@ function CreateEventWizard({
     {
       content: (
         <View style={styles.container}>
+          <Title>2. Describe what is about to Happen.</Title>
           <TextInput
             mode="flat"
-            style={{ flex: 1, margin: "5%" }}
+            style={styles.multiLineInput}
             multiline="true"
             value={description}
             placeholder="Write something..."
@@ -57,10 +77,10 @@ function CreateEventWizard({
     },
     {
       content: (
-        <Image
-          source={{ uri: "http://placehold.it/96x96" }}
-          style={{ width: 50, height: 50 }}
-        />
+        <View style={[styles.container, { marginBottom: "50%" }]}>
+          <Title>3. Set the Time and Date.</Title>
+          <WebDatePicker setDate={setDate} />
+        </View>
       ),
     },
   ];
@@ -69,7 +89,7 @@ function CreateEventWizard({
     <View style={styles.container}>
       <Wizard
         ref={wizard}
-        activeStep={0}
+        activeStep={2}
         steps={stepList}
         isFirstStep={(val) => setIsFirstStep(val)}
         isLastStep={(val) => setIsLastStep(val)}
@@ -83,17 +103,32 @@ function CreateEventWizard({
           setCurrentStep(currentStep);
         }}
       />
-      <View style={{ flexDirection: "row" }}>
-        <Button
+      <View
+        style={[
+          styles.containerRow,
+          {
+            backgroundColor: "transparent",
+          },
+        ]}
+      >
+        <IconButton
           disabled={isFirstStep}
-          title="Prev"
+          style={styles.iconButton}
+          icon="arrow-left"
+          mode="contained"
+          color={`${theme.colors.accent}`}
+          raised
           onPress={() => wizard.current.prev()}
-        />
-        <Button
+        ></IconButton>
+        <IconButton
           disabled={isLastStep}
-          title="Next"
+          style={styles.iconButton}
+          icon="arrow-right"
+          mode="contained"
+          color={`${theme.colors.accent}`}
+          raised
           onPress={() => wizard.current.next()}
-        />
+        ></IconButton>
       </View>
     </View>
   );

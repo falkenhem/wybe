@@ -1,5 +1,5 @@
 import theme from "../CustomProperties/Theme.js";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,7 +8,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: "5%",
-    width: "100%",
+    width: Dimensions.get("window").width,
+  },
+
+  containerRow: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: theme.colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "5%",
+    width: Dimensions.get("window").width,
   },
 
   singleLineInput: {
@@ -18,13 +28,29 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
+  multiLineInput: {
+    //alignItems: "top",
+    //justifyContent: "left",
+    margin: "5%",
+    width: "100%",
+    height: 400,
+  },
+
   button: {
     width: "100%",
     margin: "2%",
-    // alignItems: "center",
-    // alignContent: "center",
-    // justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    ustifyContent: "center",
     //backgroundColor: theme.colors.accent,
+  },
+
+  iconButton: {
+    width: "40%",
+    margin: "2%",
+    alignItems: "center",
+    alignContent: "center",
+    ustifyContent: "center",
   },
 
   bannerImage: {

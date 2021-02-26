@@ -14,7 +14,7 @@ function HomeStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Start"
+      initialRouteName="CreateEvent"
       screenOptions={{
         header: (props) => <TopBar {...props} currentEvent={currentEvent} />,
       }}
