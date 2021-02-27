@@ -1,11 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Image, View } from "react-native";
-import { TextInput, Title, IconButton } from "react-native-paper";
+import { Image, View, Platform } from "react-native";
+import { TextInput, Title, IconButton, Button } from "react-native-paper";
 import Wizard from "react-native-wizard";
 import styles from "../CustomProperties/Styles";
 import ImageSelector from "../Components/ImageSelector";
-import WebDatePicker from "../Components/WebDatePicker";
+import DatePickerPlatformUnique from "./DatePickerPlatformUnique";
 import theme from "../CustomProperties/Theme";
+import DatePicker from "rmc-date-picker";
+
+function checkEventSetupStatus(
+  title,
+  description,
+  date,
+  currentBanner,
+  setEventSetupComplete
+) {
+  if (
+    title.length > 0 &&
+    description.length > 0 &&
+    currentBanner !== null &&
+    date !== null
+  ) {
+    setEventSetupComplete(true);
+  }
+}
 
 function CreateEventWizard({
   getUrl,
@@ -15,31 +33,40 @@ function CreateEventWizard({
   setDescription,
   date,
   setDate,
+  addEventToFirestore,
+  currentUser,
+  bannerUrl,
 }) {
   const wizard = useRef();
   const [isFirstStep, setIsFirstStep] = useState();
   const [isLastStep, setIsLastStep] = useState();
   const [currentStep, setCurrentStep] = useState(0);
   const [currentBanner, setCurrentBanner] = useState(null);
+  const [eventSetupComplete, setEventSetupComplete] = useState(false);
 
   useEffect(() => {
-    // This gets called after every render, by default
-    // (the first one, and every one after that)
-    console.log("render!");
-
-    // If you want to implement componentWillUnmount,
-    // return a function from here, and React will call
-    // it prior to unmounting.
-    return () => console.log("unmounting...");
+    checkEventSetupStatus(
+      title,
+      description,
+      date,
+      currentBanner,
+      setEventSetupComplete
+    );
   });
+
+  //   const renderDatePicker = () => {
+  //     if (Platform !== "ios" && Platform !== "android") {
+  //       return <WebDatePicker setDate={setDate} />;
+  //     } else {
+  //       return <DateTimePicker />;
+  //     }
+  //   };
 
   const stepList = [
     {
       content: (
         <View style={styles.container}>
-          <Title fontSize={200}>
-            1. Select a Banner image and give your Event a Name.
-          </Title>
+          <Title>1. Select a Banner image and give your Event a Name.</Title>
           <View style={styles.container}>
             <ImageSelector
               getUrl={getUrl}
@@ -79,7 +106,7 @@ function CreateEventWizard({
       content: (
         <View style={[styles.container, { marginBottom: "50%" }]}>
           <Title>3. Set the Time and Date.</Title>
-          <WebDatePicker setDate={setDate} />
+          <DatePickerPlatformUnique date={date} setDate={setDate} />
         </View>
       ),
     },
@@ -89,15 +116,15 @@ function CreateEventWizard({
     <View style={styles.container}>
       <Wizard
         ref={wizard}
-        activeStep={2}
+        activeStep={0}
         steps={stepList}
         isFirstStep={(val) => setIsFirstStep(val)}
         isLastStep={(val) => setIsLastStep(val)}
         onNext={() => {
-          console.log("Next Step Called");
+          //console.log("Next Step Called");
         }}
         onPrev={() => {
-          console.log("Previous Step Called");
+          //console.log("Previous Step Called");
         }}
         currentStep={({ currentStep, isLastStep, isFirstStep }) => {
           setCurrentStep(currentStep);
@@ -130,6 +157,22 @@ function CreateEventWizard({
           onPress={() => wizard.current.next()}
         ></IconButton>
       </View>
+      <Button
+        style={styles.button}
+        disabled={!eventSetupComplete}
+        icon="check"
+        mode="contained"
+        color={`${theme.colors.accent}`}
+        raised
+        onPress={() => {
+          console.log(
+            "Created event: " + title + " With description: " + description
+          );
+          addEventToFirestore(title, description, bannerUrl, currentUser, date);
+        }}
+      >
+        Create Event
+      </Button>
     </View>
   );
 }

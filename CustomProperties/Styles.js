@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     alignItems: "center",
     justifyContent: "center",
-    padding: "5%",
+    //padding: "5%",
     width: Dimensions.get("window").width,
   },
 
@@ -22,15 +22,11 @@ const styles = StyleSheet.create({
   },
 
   singleLineInput: {
-    //alignItems: "top",
-    //justifyContent: "left",
     margin: "5%",
     width: "100%",
   },
 
   multiLineInput: {
-    //alignItems: "top",
-    //justifyContent: "left",
     margin: "5%",
     width: "100%",
     height: 400,
@@ -41,7 +37,7 @@ const styles = StyleSheet.create({
     margin: "2%",
     alignItems: "center",
     alignContent: "center",
-    ustifyContent: "center",
+    justifyContent: "center",
     //backgroundColor: theme.colors.accent,
   },
 
@@ -50,7 +46,7 @@ const styles = StyleSheet.create({
     margin: "2%",
     alignItems: "center",
     alignContent: "center",
-    ustifyContent: "center",
+    justifyContent: "center",
   },
 
   bannerImage: {

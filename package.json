@@ -10,6 +10,7 @@
   "dependencies": {
     "@cawfree/react-native-simpler-date-picker": "^0.1.0-alpha.4",
     "@material-ui/core": "^4.11.2",
+    "@react-native-community/datetimepicker": "3.0.4",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/app": "^10.4.0",
     "@react-native-firebase/messaging": "^10.4.1",

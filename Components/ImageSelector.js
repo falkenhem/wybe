@@ -49,7 +49,7 @@ function ImageSelector({ getUrl, currentBanner, setCurrentBanner }) {
             resizeMode: "crop",
           }}
         />
-        <Button onPress={() => setSelectedBanner(null)} />
+        {/* <Button onPress={() => setSelectedBanner(null)} /> */}
       </View>
     );
   }

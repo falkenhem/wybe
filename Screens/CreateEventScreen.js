@@ -1,15 +1,19 @@
 import React, { useContext, useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { TextInput, Text, Button } from "react-native-paper";
-import ImageSelector from "../Components/ImageSelector.js";
+import {
+  View,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  ScrollView,
+} from "react-native";
 import styles from "../CustomProperties/Styles";
-import { DatePickerModal } from "react-native-paper-dates";
 import * as firebase from "firebase";
 import firebaseConfig from "../Firebase/FirebaseConfig.js";
 import { AuthContext } from "../Firebase/AuthProvider";
 import CreateEventWizard from "../Components/CreateEventWizard";
 
-function addEventToFirestore(name, description, bannerUrl, currentUser) {
+function addEventToFirestore(name, description, bannerUrl, currentUser, date) {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -19,6 +23,7 @@ function addEventToFirestore(name, description, bannerUrl, currentUser) {
     .collection("THREADS")
     .add({
       name: name,
+      date: date,
       description: {
         text: description,
         createdAt: new Date().getTime(),
@@ -41,87 +46,34 @@ function addEventToFirestore(name, description, bannerUrl, currentUser) {
     });
 }
 
-function checkEventSetupStatus(
-  title,
-  description,
-  date,
-  setEventSetupComplete
-) {
-  if (title.length > 0 && description.length > 0 && date !== null) {
-    setEventSetupComplete(true);
-  }
-}
-
 function CreateEventScreen({ navigation }) {
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState();
-  const [eventSetupComplete, setEventSetupComplete] = useState(false);
   const { user } = useContext(AuthContext);
   const currentUser = user.toJSON();
   const [bannerUrl, setBannerUrl] = useState();
-  //console.log(eventSetupComplete);
 
   return (
-    <View style={styles.container}>
-      <CreateEventWizard
-        getUrl={(url) => setBannerUrl(url)}
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-        date={date}
-        setDate={setDate}
-      ></CreateEventWizard>
-      {/* <ImageSelector getUrl={(url) => setBannerUrl(url)} />
-
-      <View
-        style={{ flex: 1, flexDirection: "row", width: "100%", height: "5%" }}
-      >
-        <TextInput
-          mode="flat"
-          style={{ flex: 1, margin: "5%" }}
-          multiline="false"
-          value={title}
-          placeholder="Give your event a name..."
-          onChangeText={(title) => setTitle(title)}
-          label="Title"
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView>
+        <CreateEventWizard
+          getUrl={(url) => setBannerUrl(url)}
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          date={date}
+          setDate={setDate}
+          addEventToFirestore={addEventToFirestore}
+          currentUser={currentUser}
+          bannerUrl={bannerUrl}
         />
-      </View>
-      <View
-        style={{
-          flex: 3,
-          flexDirection: "row",
-          width: "100%",
-        }}
-      >
-        <TextInput
-          mode="flat"
-          style={{ flex: 1, margin: "5%" }}
-          multiline="true"
-          value={description}
-          placeholder="Write something..."
-          onChangeText={(description) => setDescription(description)}
-          label="Description"
-        />
-      </View>
-
-      <View style={styles.container}>
-        <Button
-          style={{ width: "100%" }}
-          icon="plus"
-          mode="contained"
-          onPress={() => {
-            console.log(
-              "Created event: " + title + " With description: " + description
-            );
-            addEventToFirestore(title, description, bannerUrl, currentUser);
-          }}
-        >
-          Create event
-        </Button>
-      </View> */}
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
