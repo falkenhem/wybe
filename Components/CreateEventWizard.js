@@ -6,7 +6,6 @@ import styles from "../CustomProperties/Styles";
 import ImageSelector from "../Components/ImageSelector";
 import DatePickerPlatformUnique from "./DatePickerPlatformUnique";
 import theme from "../CustomProperties/Theme";
-import DatePicker from "rmc-date-picker";
 
 function checkEventSetupStatus(
   title,
@@ -36,6 +35,7 @@ function CreateEventWizard({
   addEventToFirestore,
   currentUser,
   bannerUrl,
+  navigation,
 }) {
   const wizard = useRef();
   const [isFirstStep, setIsFirstStep] = useState();
@@ -169,6 +169,7 @@ function CreateEventWizard({
             "Created event: " + title + " With description: " + description
           );
           addEventToFirestore(title, description, bannerUrl, currentUser, date);
+          navigation.navigate("JoinedEvents");
         }}
       >
         Create Event

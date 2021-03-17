@@ -17,27 +17,31 @@ function AuthScreen({ navigation }) {
       style={styles.container}
     >
       <ScrollView>
-        <View style={{ padding: "10%" }}>
+        <View style={[styles.container, { padding: "10%" }]}>
           <Image
             source={require("../WYBE_icon.png")}
             style={{ width: 150, height: 150 }}
           />
         </View>
-        <TextInput
-          style={styles.singleLineInput}
-          value={username}
-          onChangeText={(username) => setUsername(username)}
-          label="Username"
-          multiline={false}
-        />
-        <TextInput
-          style={styles.singleLineInput}
-          value={password}
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-          label="Password"
-          multiline={false}
-        />
+        <View style={styles.container}>
+          <TextInput
+            style={styles.singleLineInput}
+            value={username}
+            onChangeText={(username) => setUsername(username)}
+            label="Username"
+            multiline={false}
+          />
+        </View>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.singleLineInput}
+            value={password}
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+            label="Password"
+            multiline={false}
+          />
+        </View>
         <View style={styles.container}>
           <Button
             style={styles.button}

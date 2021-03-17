@@ -1,9 +1,12 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { Share } from "react-native";
 import { Appbar } from "react-native-paper";
 import theme from "../CustomProperties/Theme.js";
+import { AuthContext } from "../Firebase/AuthProvider";
 
 function TopBar({ navigation, previous, scene, currentEvent }) {
+  const { logout } = useContext(AuthContext);
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -34,6 +37,10 @@ function TopBar({ navigation, previous, scene, currentEvent }) {
       {scene.route.name === "Chat" ? (
         <Appbar.Action icon="plus" onPress={onShare} />
       ) : null}
+      <Appbar.Action icon="logout" onPress={logout} />
+      {/* {scene.route.name === "Chat" ? (
+        <Appbar.Action icon="home" onPress={navigation.navigate("Start")} />
+      ) : null} */}
     </Appbar.Header>
   );
 }

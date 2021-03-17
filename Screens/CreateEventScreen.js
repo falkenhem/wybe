@@ -71,6 +71,7 @@ function CreateEventScreen({ navigation }) {
           addEventToFirestore={addEventToFirestore}
           currentUser={currentUser}
           bannerUrl={bannerUrl}
+          navigation={navigation}
         />
       </ScrollView>
     </KeyboardAvoidingView>

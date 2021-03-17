@@ -10,11 +10,11 @@ import TopBar from "../Components/TopBar";
 const Stack = createStackNavigator();
 
 function HomeStack() {
-  const [currentEvent, setCurrentEvent] = useState("test");
+  const [currentEvent, setCurrentEvent] = useState("");
 
   return (
     <Stack.Navigator
-      initialRouteName="CreateEvent"
+      initialRouteName="Start"
       screenOptions={{
         header: (props) => <TopBar {...props} currentEvent={currentEvent} />,
       }}

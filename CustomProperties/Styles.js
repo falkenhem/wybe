@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 
   singleLineInput: {
     margin: "5%",
-    width: "100%",
+    //padding: "5%",
+    width: "90%",
   },
 
   multiLineInput: {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: "100%",
+    width: "90%",
     margin: "2%",
     alignItems: "center",
     alignContent: "center",
